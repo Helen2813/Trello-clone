@@ -1,5 +1,6 @@
 let noteIdCounter = 8
 let colomnIdCounter = 4
+let draggedNote = null //элемент, который перетаскиваем
 
 document
     .querySelectorAll('.column')
@@ -62,5 +63,38 @@ function noteProcess (noteElement) {
     noteElement.addEventListener('blur', (event) => {
         noteElement.removeAttribute('contenteditable', 'true')
     })
+
+    noteElement.addEventListener('dragstart', dragstart_noteHandler)
+    noteElement.addEventListener('dragend', dragend_noteHandler)
+    noteElement.addEventListener('dragenter', dragenter_noteHandler)
+    noteElement.addEventListener('dragover', dragover_noteHandler)
+    noteElement.addEventListener('dragleave', dragleave_noteHandler)
+    noteElement.addEventListener('drop', drop_noteHandler)
 }
 
+function dragstart_noteHandler (event) {
+    // console.log('dragstart', event, this)
+    draggedNote = this
+    this.classList.add('dragged')
+}
+function dragend_noteHandler (event) {
+    // console.log('dragend', event, this)
+    draggedNote = null
+    this.classList.remove('dragged')
+}
+function dragenter_noteHandler (event) {
+    if (this === draggedNote) { return }
+    console.log('dragenter', event, this)
+}
+function dragover_noteHandler (event) {
+    if (this === draggedNote) { return }
+    console.log('dragover', event, this)
+}
+function dragleave_noteHandler (event) {
+    if (this === draggedNote) { return }
+    console.log('dragleave', event, this)
+}
+function drop_noteHandler (event) {
+    if (this === draggedNote) { return }
+    console.log('drop', event, this)
+}
